@@ -4,7 +4,7 @@
   "description": "## Overview The [Firebase Authentication SDK](https://firebase.google.com/docs/auth) does not currently support 2 Factor Authentication (\"2FA\"). The purpose of this library is to provide both a starter react-native application and wrapper functions around the Friebase Authentication SDK to streamline development for 2FA apps using Firebase.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/TribalScale/firebase-2fa#readme",
   "dependencies": {
     "firebase": "^6.2.4"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }
