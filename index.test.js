@@ -1,7 +1,8 @@
 const firebase2FA = require("./index");
+const fb = require("./src/firebase");
 
 describe("Firebase2FA", () => {
-  describe("initialization", () => {
+  describe("Initialization", () => {
     test("it returns methods initializeWithConfig, initializeWithInstance", () => {
       const actual = firebase2FA;
       const methodsArray = ["initializeWithConfig", "initializeWithInstance"];
@@ -53,6 +54,44 @@ describe("Firebase2FA", () => {
       const actual = () => firebase2FA.initializeWithConfig(config);
       const expected = "function";
       expect(typeof actual).toBe(expected);
+    });
+  });
+
+  describe("User", () => {
+    describe("Account Creation", () => {
+      test("createAccountWithEmail fails when email is not provided", () => {
+        const userObj = {
+          email: "",
+          password: "test"
+        };
+        const actual = () => firebase2FA.createAccountWithEmail(userObj);
+        const expected = /Email is required./;
+        expect(actual).toThrow(expected);
+      });
+
+      test("createAccountWithEmail fails when password is not provided", () => {
+        const userObj = {
+          email: "test",
+          password: ""
+        };
+        const actual = () => firebase2FA.createAccountWithEmail(userObj);
+        const expected = /Password is required./;
+        expect(actual).toThrow(expected);
+      });
+
+      test("createAccountWithEmail is successful when email & password are provided", () => {
+        const userObj = {
+          email: "test",
+          password: "testpassword"
+        };
+
+        const spy = jest.spyOn(fb, "createUser");
+        spy.mockReturnValue("mocked");
+
+        firebase2FA.createAccountWithEmail(userObj);
+        expect(spy).toHaveBeenCalledWith(userObj);
+        spy.mockRestore();
+      });
     });
   });
 });
