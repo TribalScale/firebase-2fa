@@ -1,7 +1,7 @@
-const firebase = require("firebase");
-const fb = require("./src/firebase");
+const firebase = require('firebase')
+const fb = require('./src/firebase')
 
-const requiredConfigFields = ["apiKey", "authDomain", "projectId", "appId"];
+const requiredConfigFields = ['apiKey', 'authDomain', 'projectId', 'appId']
 
 const Firebase2FA = () => {
   /**
@@ -12,28 +12,28 @@ const Firebase2FA = () => {
    * @param {string} config.appId the generated app ID for the firebase project
    */
   const initializeWithConfig = config => {
-    const appHasBeenInitialized = fb.checkInitializationState();
+    const appHasBeenInitialized = fb.checkInitializationState()
 
     if (!config) {
-      throw new Error("Please provide a firebase app configuration.");
+      throw new Error('Please provide a firebase app configuration.')
     }
     if (appHasBeenInitialized) {
-      throw new Error("Firebase has already been initialized.");
+      throw new Error('Firebase has already been initialized.')
     }
     requiredConfigFields.forEach(field => {
       if (!config[field]) {
-        throw new Error(`${field} value is required.`);
+        throw new Error(`${field} value is required.`)
       }
-    });
+    })
 
     try {
-      fb.initializeFirebase(config);
+      fb.initializeFirebase(config)
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
-  const initializeWithInstance = instance => {};
+  const initializeWithInstance = instance => {}
 
   /**
    * This function attempts to create a new firebase user with email/password
@@ -42,24 +42,21 @@ const Firebase2FA = () => {
    * @param {boolean} [sendVerificationEmail=false] whether or not to send a verification email upon account creation
    */
   const createAccountWithEmail = ({
-    email = "",
-    password = "",
-    sendVerificationEmail = false
+    email = '',
+    password = '',
+    sendUserVerification = false
   }) => {
     if (!email || !password) {
-      throw new Error(`${!email ? "Email" : "Password"} is required.`);
+      throw new Error(`${!email ? 'Email' : 'Password'} is required.`)
     }
-    return fb.createUser({ email, password });
-    // .then(getUser)
-    // .then(sendVerificationEmail)
-    // .catch(getErrorMessage);
-  };
+    return fb.createUser({ email, password }).catch(getErrorMessage)
+  }
 
   return {
     createAccountWithEmail,
     initializeWithConfig,
     initializeWithInstance
-  };
-};
+  }
+}
 
 module.exports = Firebase2FA();
